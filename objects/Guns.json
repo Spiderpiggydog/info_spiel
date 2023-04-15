@@ -1,0 +1,11 @@
+[{
+    "ar": {
+        "fireRate": 3,
+        "bulletSpeed": 10,
+        "bulletSpread": 3,
+        "bulletAmount": 5,
+        "bulletLife": 200,
+        "image": "./media/weapons/shotgun.png"
+    }
+}
+]
