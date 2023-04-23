@@ -1,0 +1,55 @@
+int currentScene = 0;
+
+abstract class obj {
+  void run() {}
+}
+
+class Scene {
+  String title;
+  ArrayList<obj> objects;
+  ArrayList<Button> buttons;
+  
+  Scene(String _title) {
+    title = _title;
+    
+    scenes.add(this);
+  }
+  void addObject(obj... _objects) {
+    for(obj o: _objects) {
+      objects.add(o);
+    }
+  }
+    
+  void addButton(Button b) {
+    buttons.add(b);
+  }
+  
+}
+
+Scene getLastScene() {
+  return scenes.get(scenes.size()-1);
+}
+
+
+ArrayList<Scene> scenes;
+void setup() {
+  size(1000, 400);
+  scenes = new ArrayList<Scene>();
+  new Scene("Start");
+  new sceneButton(30, 30, 30, 30, "Hello", 1);
+  new Scene("q");
+  new sceneButton(30, 30, 30, 30, "a", 0);
+}
+
+ArrayList<obj> objects;
+
+void draw() {
+  background(200);
+  objects = scenes.get(currentScene).objects;
+  for(int i = 0; i < objects.size(); i++) {
+    objects.get(i).run();
+  }
+  
+  //scenes.get(currentScene).objects.forEach((obj) -> println(obj));
+  
+}

@@ -1,0 +1,55 @@
+abstract class Button extends obj{
+  int x, y, w, h;
+  Object func;
+  String buttonText;
+  Button(int _x, int _y, int _w, int _h, String _text) {
+    x = _x;
+    y = _y;
+    w = _w;
+    h = _w;
+    buttonText = _text;
+    println(this);
+    getLastScene().addButton(this);
+  }
+  void run() {
+    rectMode(CENTER);
+    rect(x, y, w, h);
+    fill(0);
+    text(buttonText, x, y);
+    fill(255);
+    
+    
+  }
+  
+  void detect() {
+    if(x-w/2 < mouseX && x+w/2 > mouseX && y-h/2 < mouseY && y+h/2 > mouseY) {
+      this.pressed();
+    }
+  }
+  
+  void pressed() {}
+  
+}
+void func() {}
+class actionButton extends Button {
+  Object func;
+  actionButton(int _x, int _y, int _w, int _h, String _text, Object _func) {
+    super(_x, _y, _w, _h, _text);
+    func = _func;
+  }
+  void pressed() {
+    func();
+  }
+  
+  
+}
+class sceneButton extends Button {
+  int scene;
+  sceneButton(int _x, int _y, int _w, int _h, String _text, int _scene) {
+    super(_x, _y, _w, _h, _text);
+    scene = _scene;
+  }
+  void pressed() {
+    currentScene = scene;
+  }
+}

@@ -1,11 +1,23 @@
 [{
-    "ar": {
+    "shotgun": {
+        "name": "shotgun",
         "fireRate": 3,
         "bulletSpeed": 10,
-        "bulletSpread": 3,
+        "bulletSpread": 1,
         "bulletAmount": 5,
-        "bulletLife": 200,
-        "image": "./media/weapons/shotgun.png"
+        "bulletLife": 100,
+        "bulletHealth": 5,
+        "bulletDamage": 5
+    },
+    "ar": {
+        "name": "ar",
+        "fireRate": 1,
+        "bulletSpeed": 20,
+        "bulletSpread": 0,
+        "bulletAmount": 1,
+        "bulletLife": 300,
+        "bulletHealth": 1,
+        "bulletDamage": 1
     }
 }
 ]

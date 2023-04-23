@@ -5,49 +5,53 @@ class Level extends Scene {
   int y;
   PImage island;
   
-  PVector[] islands;
+  ArrayList<Enemy> enemies;
+  PVector[] islands_coords;
   
   Level(String _title, int _island) {
     super(_title);
+    island = islands[_island-1];
     
-    islands = new PVector[3];
+    
+    islands_coords = new PVector[3];
     
     
     
     y = 500;
     
     for(int i = 0; i<=2; i++) {
-      islands[i] = new PVector(300 + i*400, y);
+      islands_coords[i] = new PVector(20 + i*(island.width+400), y);
     }
-    island = loadImage("./media/islands/" + _island + ".png");
-
-    player = new Charakter(islands[1].x, 500, island, islands[1], "ar");
     
-    bg = loadImage("./media/background/" + title.toLowerCase() + ".png");
+    enemies = new ArrayList<Enemy>();
     
-    scenes.add(this);
+    for(int i = 0; i<=10; i++) {
+      enemies.add(new Enemy(islands_coords[2].x+100, islands_coords[2].y, islands_coords[2], island, 15));
+    }
+    
+    player = new Charakter(islands_coords[1].x, 500, island, islands_coords[1], "shotgun");
+    
+    
+    bg = loadImage("./media/background/hintergrund" + title.toLowerCase() + ".png");
+    
   }
   
   void execute() {
     background(bg);
     
-    for(PVector v:islands) {
+    
+    for(PVector v:islands_coords) {
       image(island, v.x, v.y);
     }
+    
+    enemies.forEach(e -> e.run());
     
     
     run();
     player.run();
     bullets.forEach(x -> x.run());
     
-    bullets.removeAll(bulletsToRemove);
-    bulletsToRemove.clear();
+    bullets.removeIf(b -> {return b.deathFrame < frameCount || b.bulletHealth <= 0;});
+    enemies.removeIf(e -> {return e.enemyHealth <= 0;});
   }
-}
-
-void one() {
-  
-}
-
-void one_pressed() {
 }

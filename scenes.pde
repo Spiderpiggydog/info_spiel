@@ -6,20 +6,20 @@ Scene getCurrentScene() {
   return scenes.get(currentScene);
 }
 
+
 class Scene{
   void run() {};
   void key_pressed() {};
   String title;
   PImage bg;
   
-  
   Scene(String _title) {
     title = _title;
-    bg = loadImage("./media/background/" + title.toLowerCase() + ".png");
+    
+    if(!(this instanceof Level)) bg = loadImage("./media/background/" + title.toLowerCase() + ".png");   
     
     scenes.add(this);
   }
-  
   
   void execute() {
     background(bg);
@@ -41,15 +41,19 @@ void start() {
     }
   }
 }
+
 int selected = 0;
 void select() {
-  for(int i = 0; i<=islands.length-1; i++) {
-    int x = 100+(i*400)-(int(i>4)*2000);
+  for(int i = 0; i<=islands_select.length-1; i++) {
+    int x = 100+(i*350)-(int(i>4)*(350*5));
     int y = 200 + (500*int(i>4));
+    
     if(selected == i) {
-      rect(x, y, islands[i].width, islands[i].height);
+      noFill();
+      rect(x, y, islands_select[i].width, islands_select[i].height);
     }
-    image(islands[i], x, y);
+    
+    image(islands_select[i], x, y);
   }
 }
 
@@ -64,7 +68,16 @@ void select_pressed() {
         break;
     }
   }
+  
   if(key == ENTER) {
         currentScene = currentScene+1+selected;
   }
+}
+
+void shop() {
+  
+}
+
+void shop_pressed() {
+
 }
