@@ -33,7 +33,7 @@ class Level extends Scene {
     
     
     bg = loadImage("./media/background/hintergrund" + title.toLowerCase() + ".png");
-    
+    bg.resize(width, height);
   }
   
   void execute() {

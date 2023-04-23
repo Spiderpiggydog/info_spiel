@@ -16,7 +16,10 @@ class Scene{
   Scene(String _title) {
     title = _title;
     
-    if(!(this instanceof Level)) bg = loadImage("./media/background/" + title.toLowerCase() + ".png");   
+    if(!(this instanceof Level)) {
+      bg = loadImage("./media/background/" + title.toLowerCase() + ".png");
+      bg.resize(width, height);
+    };   
     
     scenes.add(this);
   }

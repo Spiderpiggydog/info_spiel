@@ -6,7 +6,7 @@ ArrayList<Bullet> bullets;
 String[] data;
 IntList unlockedLevels;
 
-int currentScene = 2;
+int currentScene = 0;
 PImage[] islands = new PImage[10];
 PImage[] islands_select = new PImage[10];
 
@@ -32,9 +32,10 @@ SoundFile bgmusic;
 
 //Haupt
 void setup() {
+  
   frameRate(60);
   textAlign(CENTER, CENTER);
-  fullScreen();
+  size(1500, 1000);
   textSize(50);
   
   data = loadStrings("./data.txt");
