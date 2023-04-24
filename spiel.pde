@@ -10,7 +10,7 @@ int currentScene = 0;
 PImage[] islands = new PImage[10];
 PImage[] islands_select = new PImage[10];
 PImage selected_image;
-boolean dead;
+boolean dead = false;
 
 PImage arm;
 PImage character;
@@ -37,6 +37,8 @@ SoundFile bgmusic;
 
 //Haupt
 void setup() {
+  
+  prepareExitHandler();
   
   frameRate(60);
   textAlign(CENTER, CENTER);
@@ -156,6 +158,10 @@ void draw() {
   //println(timer);
 }
 
+void stop() {
+  println(1);
+}
+
 void keyPressed() {
   if(key == CODED && !keycodes.contains(keyCode)) {
    
@@ -186,10 +192,25 @@ void reset_levels() {
   if(dead) {
   for(int i = 0; i<=scenes.size()-1; i++) {
     if(scenes.get(i) instanceof Level) {
+      scenes.remove(i);
       scenes.set(i, originalLevels.get(i-2));
-      println(scenes);
-      println(originalLevels);
       };
     }
+    dead = false;
   }
+}
+
+
+//
+private void prepareExitHandler () {
+
+Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+
+public void run () {
+
+
+}
+
+}));
+
 }

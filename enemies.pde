@@ -61,13 +61,10 @@ class Enemy {
       if(PVector.add(pos, new PVector(0, -18)).dist(b.pos) < 25) {
         enemyHealth -= b.bulletDamage*2;
         b.bulletHealth -= b.bulletDamage;
-        
-        tint(255);
       };
       if(pos.dist(b.pos) < 20 || PVector.add(pos, new PVector(0, 20)).dist(b.pos) < 23) {
         enemyHealth -= b.bulletDamage;
         b.bulletHealth -= b.bulletDamage;
-        tint(255);
       };
     });
     

@@ -10,7 +10,7 @@ class Level extends Scene {
   PVector[] start_positions;
   int rounds = 4;
   int currentRound = 0;
-  int enemyAmount, enemyHealth;
+  int enemyAmount, enemyHealth, enemiesKilled;
   
   Level(String _title, int enemyAmount, int enemyHealth) {
     super(_title);
@@ -86,11 +86,12 @@ class Level extends Scene {
   }
   
   Level copy() {
-    return new Level(title, enemyAmount, enemies.get(0).enemyHealth, 0);
+    return new Level(title + "", enemyAmount + 0, enemies.get(0).enemyHealth + 0, 0);
   }
   
   boolean execute() {
     background(bg);
+    text(enemiesKilled + "/" + enemyAmount*currentRound, 30, 30);
     
     if(currentRound > rounds) {
       imageMode(CENTER);
@@ -171,8 +172,8 @@ class Level extends Scene {
       }
       
       player.canJump = false;
-    player.bounds = islands_coords[1];
-    player.boundsNext = islands_coords[2];
+      player.bounds = islands_coords[1];
+      player.boundsNext = islands_coords[2];
       
       for(int i = 0; i<=enemyAmount+(currentRound*2); i++) {
       enemies.add(new Enemy(islands_coords[2].x+(i*20) + random(-5, 200), islands_coords[2].y, islands_coords, island, 2));
