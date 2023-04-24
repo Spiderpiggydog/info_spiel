@@ -2,50 +2,72 @@ class Enemy {
   PVector pos, acc;
   int speed = 1;
   int enemyHealth;
-  PVector curIsland;
+  PVector[] islands;
+  PVector curIsland, prevIsland;
   float angle;
   int w, h;
   Boolean inAir = false;
   
-  Enemy(float x, float y, PVector island, PImage is, int health) {
+  Enemy(float x, float y, PVector[] island, PImage is, int health) {
     pos = new PVector(x, y);
     acc = new PVector(0, 0);
     w = is.width;
     h = is.height;
-    curIsland = island.copy();
+    islands = island.clone();
+    curIsland = islands[2];
+    prevIsland = islands[1];
     enemyHealth = health;
     
   }
   
   void run() {
     
-    if(curIsland.x > pos.x || curIsland.x + w < pos.x ||
-       curIsland.y > pos.y || curIsland.y + h < pos.y) {
+    if((curIsland.x > pos.x || curIsland.x + w < pos.x ||
+       curIsland.y > pos.y || curIsland.y + h < pos.y) && inAir == false) {
+      
       inAir = true;
-      acc.add(-10, -0.5);
+      acc.add(-7 - random(-3, 3), -10 - random(0, 3));
       
       
-      
-      
-    } else {
-      angle = frameCount%20>10 ?0.1:-0.1;
-      pos.x -= speed;
     }
+    
+    if(!(prevIsland.x > pos.x || prevIsland.x + w < pos.x ||
+       prevIsland.y > pos.y || prevIsland.y + h < pos.y)) {
+         acc.set(0, 0);
+         inAir = false;
+       }
+    
+    angle = frameCount%20>10 ?0.1:-0.1;
+    pos.x -= speed;
+    
+    
+    
     
     if(inAir) {
-      
+      acc.add(0, 0.4);
       pos.add(acc);
       
-      acc.y += 2;
-      angle = -0.1;
+      if(frameCount % 25 == 0) {
+        acc.add(-1, -2);
+      }
       
-      acc = acc.mult(0.8);
+      angle = -0.1;
     }
     
+    
+    
     bullets.forEach(b -> {
-      if(pos.dist(b.pos) < 20) {
+      //Headshots
+      if(PVector.add(pos, new PVector(0, -18)).dist(b.pos) < 25) {
+        enemyHealth -= b.bulletDamage*2;
+        b.bulletHealth -= b.bulletDamage;
+        
+        tint(255);
+      };
+      if(pos.dist(b.pos) < 20 || PVector.add(pos, new PVector(0, 20)).dist(b.pos) < 23) {
         enemyHealth -= b.bulletDamage;
         b.bulletHealth -= b.bulletDamage;
+        tint(255);
       };
     });
     

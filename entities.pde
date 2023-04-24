@@ -42,7 +42,12 @@ class Bullet {
   
   Bullet(PVector _pos, PVector _dir, float speed, float bulletLife, int angle, float damage, float health) {
     pos = _pos.copy();
-    pos.add(20, 20);
+    
+    PVector anglevector = PVector.fromAngle(angle);
+    anglevector.x *= 10;
+    anglevector.y *= 22;
+    
+    pos.add(anglevector);
     dir = _dir.copy();
     dir.mult(speed);
     deathFrame = frameCount+bulletLife;;

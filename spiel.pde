@@ -9,12 +9,17 @@ IntList unlockedLevels;
 int currentScene = 0;
 PImage[] islands = new PImage[10];
 PImage[] islands_select = new PImage[10];
+PImage selected_image;
+boolean dead;
 
-PImage[] characters;
-PImage[] arms;
-int character = 0;
+PImage arm;
+PImage character;
+PImage character_walk;
 
 ArrayList<Scene> scenes;
+ArrayList<Level> originalLevels;
+int nextScene = 0;
+int endFrame = 0;
 
 ArrayList<Character> keys;
 ArrayList<Integer> keycodes;
@@ -41,9 +46,7 @@ void setup() {
   data = loadStrings("./data.txt");
   unlockedLevels = new IntList();
   
-  
-  characters = new PImage[5];
-  arms = new PImage[5];
+  originalLevels = new ArrayList<Level>();
   bullets = new ArrayList<Bullet>();
   scenes = new ArrayList<Scene>();
   keys = new ArrayList<Character>();
@@ -51,9 +54,10 @@ void setup() {
   
   enemy = loadImage("./media/sprites/enemy1.png");
   bullet = loadImage("./media/weapons/bullet1.png");
-  arms[0] = loadImage("./media/sprites/Arm.png");
-  
-  
+  arm = loadImage("./media/sprites/Arm.png");
+  selected_image = loadImage("./media/islands/selector.png");
+  character = loadImage("./media/sprites/Player.png");
+  character_walk = loadImage("./media/sprites/Playerw.png");
   
   for(String i:data[0].split(",")) {
      unlockedLevels.push(int(i));
@@ -61,7 +65,7 @@ void setup() {
   
   
   for(int i = 0; i<=0; i++) {
-    characters[i] = loadImage("./media/sprites/Player" + (i+1) + ".png");
+    
   }
   
   for(int i = 1; i<=10; i++) {
@@ -69,7 +73,7 @@ void setup() {
     
     
     islands_select[i-1] = islands[i-1].copy();
-    islands_select[i-1].resize(285, 157);
+    islands_select[i-1].resize(200, 111);
     
     if(!unlockedLevels.hasValue(i-1)) {
       islands_select[i-1].filter(GRAY);
@@ -106,19 +110,43 @@ void setup() {
   
   
   //Szenen erstellen
+  //1 = Start, 2 = Select, 3 = Loading Screen, weiteren sind die Levels
   new Scene("Start") {void run() {start();}};
   new Scene("Select") {void run() {select();}; void key_pressed() {select_pressed();}};
-  new Level("1", 1);
-  new Level("2", 2);
+  /*
+  new Scene("loadingScreen", 1) {
+    void run() {
+      loadingScreen();
+  }};
+  */
+  //new Scene("GameOver", "select.png") {};
+  new Level("1", 3, 2);
   
+  new Level("2", 3, 5);
+  
+  
+  new Level("3", 4, 6);
+  new Level("4", 5, 4);
+  
+  /*
+  new Level("5");
+  new Level("6");
+  new Level("7");
+  new Level("8");
+  new Level("9");
+  new Level("10");
+  */
   //bgmusic = new SoundFile(this, "./media/music/start.wav");
   //bgmusic.play();
 }
 
-
+void changeScene(int _nextScene) {
+  currentScene = 2;
+  nextScene = _nextScene;
+  endFrame = frameCount + 150;
+}
 
 void draw() {
-  
   background(200);
   getCurrentScene().execute();
   
@@ -130,8 +158,10 @@ void draw() {
 
 void keyPressed() {
   if(key == CODED && !keycodes.contains(keyCode)) {
+   
     keycodes.add(keyCode);
-  } else if(!keys.contains(key)) {
+  }
+  if(!keys.contains(key)) {
     keys.add(str(key).toLowerCase().charAt(0));
   }
   
@@ -140,7 +170,7 @@ void keyPressed() {
 
 void keyReleased() {
   if(key == CODED && keycodes.contains(keyCode)) keycodes.remove(keycodes.indexOf(keyCode));
-  else if(keys.contains(key)) keys.remove(keys.indexOf(key));
+  if(keys.contains(key)) keys.remove(keys.indexOf(key));
 }
 
 boolean kpressed(char k) {
@@ -149,4 +179,17 @@ boolean kpressed(char k) {
 
 boolean kcpressed(int k) {
   return keycodes.contains(k);
+}
+
+
+void reset_levels() {
+  if(dead) {
+  for(int i = 0; i<=scenes.size()-1; i++) {
+    if(scenes.get(i) instanceof Level) {
+      scenes.set(i, originalLevels.get(i-2));
+      println(scenes);
+      println(originalLevels);
+      };
+    }
+  }
 }
